@@ -1,15 +1,20 @@
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { selectAllBlogs } from "../reducers/blogSlice";
-
+import ShowTime from "./ShowTime.jsx";
+import ShowAuthor from "./ShowAuthor.jsx";
 const BlogsList = () => {
     const blogs = useSelector(selectAllBlogs);
 
     const navigate = useNavigate();
-
-    const renderedBlogs = blogs.map((blog) => (
+    const orderedBlogs = blogs.slice().sort((a,b) => b.date.localeCompare(a.date));
+    const renderedBlogs = orderedBlogs.map((blog) => (
         <article key={blog.id} className="blog-excerpt">
             <h3>{blog.title}</h3>
+            <div style={{marginTop:"10px" , marginRight:"20px"}}>
+                <ShowTime  timeStamp={blog.date} />
+                <ShowAuthor userId={blog.user}/>
+            </div>
             <p className="blog-content">{blog.content.substring(0, 100)}</p>
 
             <Link to={`/blogs/${blog.id}`} className="button muted-button">

@@ -1,6 +1,8 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { blogDeleted, selectBlogById } from "../reducers/blogSlice";
+import ShowTime from "./ShowTime.jsx";
+import ShowAuthor from "./ShowAuthor.jsx";
 
 const SingleBlogPage = () => {
     const { blogId } = useParams();
@@ -29,7 +31,10 @@ const SingleBlogPage = () => {
         <section>
             <article className="blog">
                 <h2>{blog.title}</h2>
-
+                <div style={{marginTop:"10px" , marginRight:"20px"}}>
+                    <ShowTime timeStamp={blog.date} />
+                    <ShowAuthor userId={blog.use} />
+                </div>
                 <p className="blog-content">{blog.content}</p>
 
                 <Link to={`/editBlog/${blog.id}`} className="button">
