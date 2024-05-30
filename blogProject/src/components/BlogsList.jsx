@@ -1,17 +1,24 @@
-import  {Link,useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
-const BlogsList = () =>{
-    const blogs = useSelector((state) => state.blogs);
-    const navigate = useNavigate();
-    const renderedBlogs = blogs.map(blog =>(
-       <article className="blog-excerpt">
-           <h3>{blog.title}</h3>
-           <p className="blog-content">{blog.content.substring(0,100)}</p>
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { selectAllBlogs } from "../reducers/blogSlice";
 
-           <Link to={`/blogs/${blog.id}`} className="button muted-button">دیدن کامل پست</Link>
-       </article>
+const BlogsList = () => {
+    const blogs = useSelector(selectAllBlogs);
+
+    const navigate = useNavigate();
+
+    const renderedBlogs = blogs.map((blog) => (
+        <article key={blog.id} className="blog-excerpt">
+            <h3>{blog.title}</h3>
+            <p className="blog-content">{blog.content.substring(0, 100)}</p>
+
+            <Link to={`/blogs/${blog.id}`} className="button muted-button">
+                دیدن کامل پست
+            </Link>
+        </article>
     ));
-    return(
+
+    return (
         <section className="blog-list">
             <button
                 className="full-button accent-button"
@@ -25,6 +32,7 @@ const BlogsList = () =>{
             <h2>تمامی پست ها</h2>
             {renderedBlogs}
         </section>
-    )
-}
+    );
+};
+
 export default BlogsList;

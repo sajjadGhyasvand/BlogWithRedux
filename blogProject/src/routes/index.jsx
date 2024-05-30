@@ -2,8 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 
 import App from "../App";
 import MainLayout from "../layouts/MainLayout";
-import SingleBlogPage from "../components/SingleBlogPage.jsx";
-import CreateBlogForm from "../components/CreateBlogForm.jsx";
+import SingleBlogPage from "../components/SingleBlogPage";
+import CreateBlogForm from "../components/CreateBlogForm";
+import EditBlogForm from "../components/EditBlogForm";
 
 export const router = createBrowserRouter([
     {
@@ -18,12 +19,16 @@ export const router = createBrowserRouter([
                 element: <App />,
             },
             {
+                path: "/blogs/create-blog",
+                element: <CreateBlogForm />,
+            },
+            {
                 path: "/blogs/:blogId",
                 element: <SingleBlogPage />,
             },
             {
-                path: "/blogs/create-blog",
-                element: <CreateBlogForm />,
+                path: "/editBlog/:blogId",
+                element: <EditBlogForm />,
             },
         ],
     },
