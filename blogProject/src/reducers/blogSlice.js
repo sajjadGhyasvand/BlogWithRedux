@@ -1,24 +1,16 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
-import {sub} from "date-fns-jalali";
+import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
+import { getAllBlogs } from "../services/blogServices";
 
 const initialState = {
-   blogs: [
-      {
-         id: nanoid(),
-         date: sub(new Date() , {minutes: 10}).toISOString(),
-         title: "اولین پست",
-         content: "محتوای اولین پست ما ☺️",
-         user: "1"
-      },
-      {
-         id: nanoid(),
-         date: sub(new Date() , {minutes: 5}).toISOString(),
-         title: "دومین پست",
-         content: "دومین پست ما میباشد سلام دنیا 🤗",
-         user: "2"
-      },
-   ],
+   blogs: [],
+   status: "idle",
+   error: null,
 };
+
+export const fetchBlogs = createAsyncThunk("/blogs/fetchBlogs", async () => {
+   const response = await getAllBlogs();
+   return response.data;
+});
 
 const blogsSlice = createSlice({
    name: "blogs",
@@ -28,12 +20,12 @@ const blogsSlice = createSlice({
          reducer(state, action) {
             state.blogs.push(action.payload);
          },
-         prepare(title, content,userId) {
+         prepare(title, content, userId) {
             //Complex logic
             return {
                payload: {
                   id: nanoid(),
-                  date: new Date().toISOString() ,
+                  date: new Date().toISOString(),
                   title,
                   content,
                   user: userId,
@@ -54,6 +46,28 @@ const blogsSlice = createSlice({
          const { id } = action.payload;
          state.blogs = state.blogs.filter((blog) => blog.id !== id);
       },
+      reactionAdded: (state, action) => {
+         const { blogId, reaction } = action.payload;
+         const existingBlog = state.blogs.find((blog) => blog.id === blogId);
+
+         if (existingBlog) {
+            existingBlog.reactions[reaction]++;
+         }
+      },
+   },
+   extraReducers: (builder) => {
+      builder
+          .addCase(fetchBlogs.pending, (state, action) => {
+             state.status = "loading";
+          })
+          .addCase(fetchBlogs.fulfilled, (state, action) => {
+             state.status = "completed";
+             state.blogs = action.payload;
+          })
+          .addCase(fetchBlogs.rejected, (state, action) => {
+             state.status = "failed";
+             state.error = action.error.message;
+          });
    },
 });
 
@@ -62,6 +76,7 @@ export const selectAllBlogs = (state) => state.blogs.blogs;
 export const selectBlogById = (state, blogId) =>
     state.blogs.blogs.find((blog) => blog.id === blogId);
 
-export const { blogAdded, blogUpdated, blogDeleted } = blogsSlice.actions;
+export const { blogAdded, blogUpdated, blogDeleted, reactionAdded } =
+    blogsSlice.actions;
 
 export default blogsSlice.reducer;

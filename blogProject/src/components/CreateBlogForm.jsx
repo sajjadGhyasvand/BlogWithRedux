@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { nanoid } from "@reduxjs/toolkit";
 
 import { blogAdded } from "../reducers/blogSlice";
+import {selectAllUsers} from "../reducers/userSlice.js";
 
 const CreateBlogForm = () => {
     const [title, setTitle] = useState("");
@@ -11,7 +12,7 @@ const CreateBlogForm = () => {
     const [userId,setUserId] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const users = useSelector(state => state.users);
+    const users = useSelector(selectAllUsers);
 
     const onTitleChange = (e) => setTitle(e.target.value);
     const onContentChange = (e) => setContent(e.target.value);
@@ -45,7 +46,7 @@ const CreateBlogForm = () => {
                     <option value="">انتخاب نویسنده</option>
                     {
                         users.map(user => (
-                            <option key={user.id} value={user.id}>{user.fullName}</option>
+                            <option key={user.id} value={user.id}>{user.fullname}</option>
                         ))
                     }
                 </select>

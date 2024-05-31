@@ -1,12 +1,28 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { selectAllBlogs } from "../reducers/blogSlice";
+import {fetchBlogs, selectAllBlogs} from "../reducers/blogSlice";
 import ShowTime from "./ShowTime.jsx";
 import ShowAuthor from "./ShowAuthor.jsx";
-const BlogsList = () => {
-    const blogs = useSelector(selectAllBlogs);
+import ReactionButtons from "./ReactionButton.jsx";
+import {useEffect} from "react";
 
+const BlogsList = () => {
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const blogs = useSelector(selectAllBlogs);
+    const blogStatus = useSelector(state => state.blogs.status);
+
+    useEffect(() => {
+        if (blogStatus === "idle"){
+            dispatch(fetchBlogs());
+        }
+    }, [blogStatus,dispatch]);
+
+
+
+
     const orderedBlogs = blogs.slice().sort((a,b) => b.date.localeCompare(a.date));
     const renderedBlogs = orderedBlogs.map((blog) => (
         <article key={blog.id} className="blog-excerpt">
@@ -16,7 +32,7 @@ const BlogsList = () => {
                 <ShowAuthor userId={blog.user}/>
             </div>
             <p className="blog-content">{blog.content.substring(0, 100)}</p>
-
+            <ReactionButtons blog={blog} />
             <Link to={`/blogs/${blog.id}`} className="button muted-button">
                 دیدن کامل پست
             </Link>
