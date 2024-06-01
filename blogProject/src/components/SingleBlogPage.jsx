@@ -1,9 +1,9 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { blogDeleted, selectBlogById } from "../reducers/blogSlice";
-import ShowTime from "./ShowTime.jsx";
-import ShowAuthor from "./ShowAuthor.jsx";
-import ReactionButtons from "./ReactionButton.jsx";
+import ShowTime from "./ShowTime";
+import ShowAuthor from "./ShowAuthor";
+import ReactionButtons from "./ReactionButtons";
 
 const SingleBlogPage = () => {
     const { blogId } = useParams();
@@ -32,12 +32,16 @@ const SingleBlogPage = () => {
         <section>
             <article className="blog">
                 <h2>{blog.title}</h2>
-                <div style={{marginTop:"10px" , marginRight:"20px"}}>
-                    <ShowTime timeStamp={blog.date} />
-                    <ShowAuthor userId={blog.use} />
+
+                <div style={{ marginTop: "10px", marginRight: "20px" }}>
+                    <ShowTime timestamp={blog.date} />
+                    <ShowAuthor userId={blog.user} />
                 </div>
+
                 <p className="blog-content">{blog.content}</p>
+
                 <ReactionButtons blog={blog} />
+
                 <Link to={`/editBlog/${blog.id}`} className="button">
                     ویرایش پست
                 </Link>
