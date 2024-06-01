@@ -1,6 +1,10 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { blogDeleted, selectBlogById } from "../reducers/blogSlice";
+import {
+    selectBlogById,
+    deleteApiBlog,
+    blogDeleted,
+} from "../reducers/blogSlice";
 import ShowTime from "./ShowTime";
 import ShowAuthor from "./ShowAuthor";
 import ReactionButtons from "./ReactionButtons";
@@ -23,6 +27,7 @@ const SingleBlogPage = () => {
 
     const handleDelete = () => {
         if (blog) {
+            // dispatch(deleteApiBlog(blog.id));
             dispatch(blogDeleted({ id: blog.id }));
             navigate("/");
         }
