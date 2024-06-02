@@ -3,6 +3,7 @@ import {
     nanoid,
     createAsyncThunk,
     current,
+    createSelector,
 } from "@reduxjs/toolkit";
 import {
     createBlog,
@@ -133,6 +134,12 @@ export const selectAllBlogs = (state) => state.blogs.blogs;
 
 export const selectBlogById = (state, blogId) =>
     state.blogs.blogs.find((blog) => blog.id === blogId);
+
+export const selectUserBlogs = createSelector(
+    [selectAllBlogs, (_, userId) => userId],
+    (blogs, userId) => blogs.filter((blog) => blog.user === userId)
+);
+//selectUserBlogs(state, userId);
 
 export const { blogAdded, blogUpdated, blogDeleted, reactionAdded } =
     blogsSlice.actions;

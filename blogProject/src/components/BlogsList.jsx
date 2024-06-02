@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,39 +8,30 @@ import ShowAuthor from "./ShowAuthor";
 import ReactionButtons from "./ReactionButtons";
 import Spinner from "./Spinner";
 
-const Blogs = ({ blogs }) => {
-    const orderedBlogs = blogs
-        .slice()
-        .sort((a, b) => b.date.localeCompare(a.date));
-
+let Blog = ({ blog }) => {
     return (
         <>
-            {orderedBlogs.map((blog) => (
-                <article key={blog.id} className="blog-excerpt">
-                    <h3>{blog.title}</h3>
+            <article className="blog-excerpt">
+                <h3>{blog.title}</h3>
 
-                    <div style={{ marginTop: "10px", marginRight: "20px" }}>
-                        <ShowTime timestamp={blog.date} />
-                        <ShowAuthor userId={blog.user} />
-                    </div>
+                <div style={{ marginTop: "10px", marginRight: "20px" }}>
+                    <ShowTime timestamp={blog.date} />
+                    <ShowAuthor userId={blog.user} />
+                </div>
 
-                    <p className="blog-content">
-                        {blog.content.substring(0, 100)}
-                    </p>
+                <p className="blog-content">{blog.content.substring(0, 100)}</p>
 
-                    <ReactionButtons blog={blog} />
+                <ReactionButtons blog={blog} />
 
-                    <Link
-                        to={`/blogs/${blog.id}`}
-                        className="button muted-button"
-                    >
-                        دیدن کامل پست
-                    </Link>
-                </article>
-            ))}
+                <Link to={`/blogs/${blog.id}`} className="button muted-button">
+                    دیدن کامل پست
+                </Link>
+            </article>
         </>
     );
 };
+
+Blog = memo(Blog);
 
 const BlogsList = () => {
     const dispatch = useDispatch();
@@ -61,7 +52,13 @@ const BlogsList = () => {
     if (blogStatus === "loading") {
         content = <Spinner text="بارگذاری ..." />;
     } else if (blogStatus === "completed") {
-        content = <Blogs blogs={blogs} />;
+        const orderedBlogs = blogs
+            .slice()
+            .sort((a, b) => b.date.localeCompare(a.date));
+
+        content = orderedBlogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+        ));
     } else if (blogStatus === "failed") {
         content = <div>{error}</div>;
     }
