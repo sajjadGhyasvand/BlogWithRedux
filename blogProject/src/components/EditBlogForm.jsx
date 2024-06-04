@@ -1,40 +1,38 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { updateApiBlog, selectBlogById } from "../reducers/blogSlice";
+import { useEditBlogMutation, useGetBlogQuery } from "../api/apiSlice";
 
 const EditBlogForm = () => {
     const { blogId } = useParams();
 
-    const blog = useSelector((state) => selectBlogById(state, blogId));
+    const { data: blog } = useGetBlogQuery(blogId);
+    const [updateBlog, { isLoading }] = useEditBlogMutation();
 
     const [title, setTitle] = useState(blog.title);
     const [content, setContent] = useState(blog.content);
 
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const onTitleChange = (e) => setTitle(e.target.value);
     const onContentChange = (e) => setContent(e.target.value);
 
-    const handleSubmitForm = () => {
+    const handleSubmitForm = async () => {
+        const editedBlog = {
+            id: blogId,
+            date: blog.date,
+            title,
+            content,
+            user: blog.user,
+            reactions: {
+                thumbsUp: 0,
+                hooray: 0,
+                heart: 0,
+                rocket: 0,
+                eyes: 0,
+            },
+        };
         if (title && content) {
-            dispatch(
-                updateApiBlog({
-                    id: blogId,
-                    date: blog.date,
-                    title,
-                    content,
-                    user: blog.user,
-                    reactions: {
-                        thumbsUp: 0,
-                        hooray: 0,
-                        heart: 0,
-                        rocket: 0,
-                        eyes: 0,
-                    },
-                })
-            );
+            await updateBlog({ ...editedBlog });
             navigate(`/blogs/${blogId}`);
         }
     };
