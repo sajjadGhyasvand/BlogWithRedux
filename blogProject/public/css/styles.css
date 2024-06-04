@@ -2,9 +2,9 @@
   font-family: "vazir";
   src: url("../fonts/Vazir.eot");
   src: url("../fonts/Vazir.eot?#iefix") format("embedded-opentype"),
-  url("../fonts/Vazir.woff2") format("woff2"),
-  url("../fonts/Vazir.woff") format("woff"),
-  url("../fonts/Vazir.ttf") format("truetype");
+    url("../fonts/Vazir.woff2") format("woff2"),
+    url("../fonts/Vazir.woff") format("woff"),
+    url("../fonts/Vazir.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -14,9 +14,9 @@
   font-family: "tanha";
   src: url("../fonts/Tanha.eot");
   src: url("../fonts/Tanha.eot?#iefix") format("embedded-opentype"),
-  url("../fonts/Tanha.woff2") format("woff2"),
-  url("../fonts/Tanha.woff") format("woff"),
-  url("../fonts/Tanha.ttf") format("truetype");
+    url("../fonts/Tanha.woff2") format("woff2"),
+    url("../fonts/Tanha.woff") format("woff"),
+    url("../fonts/Tanha.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -35,7 +35,7 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-  monospace;
+    monospace;
 }
 
 :root {
@@ -208,29 +208,29 @@ button.reaction-button {
   border-radius: 50%;
   background: var(--redux-color);
   background: -moz-linear-gradient(
-          left,
-          var(--redux-color) 10%,
-          rgba(128, 0, 255, 0) 42%
+    left,
+    var(--redux-color) 10%,
+    rgba(128, 0, 255, 0) 42%
   );
   background: -webkit-linear-gradient(
-          left,
-          var(--redux-color) 10%,
-          rgba(128, 0, 255, 0) 42%
+    left,
+    var(--redux-color) 10%,
+    rgba(128, 0, 255, 0) 42%
   );
   background: -o-linear-gradient(
-          left,
-          var(--redux-color) 10%,
-          rgba(128, 0, 255, 0) 42%
+    left,
+    var(--redux-color) 10%,
+    rgba(128, 0, 255, 0) 42%
   );
   background: -ms-linear-gradient(
-          left,
-          var(--redux-color) 10%,
-          rgba(128, 0, 255, 0) 42%
+    left,
+    var(--redux-color) 10%,
+    rgba(128, 0, 255, 0) 42%
   );
   background: linear-gradient(
-          to right,
-          var(--redux-color) 10%,
-          rgba(128, 0, 255, 0) 42%
+    to right,
+    var(--redux-color) 10%,
+    rgba(128, 0, 255, 0) 42%
   );
   position: relative;
   -webkit-animation: load3 1.4s infinite linear;
